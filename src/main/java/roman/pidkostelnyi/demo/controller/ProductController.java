@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import roman.pidkostelnyi.demo.dto.request.ProductRequest;
 import roman.pidkostelnyi.demo.service.ProductService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -16,7 +18,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public void create(@RequestBody ProductRequest request) {
+    public void create(@Valid @RequestBody ProductRequest request) {
         productService.create(request);
     }
 }

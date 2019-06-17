@@ -7,6 +7,7 @@ import roman.pidkostelnyi.demo.dto.request.CategoryRequest;
 import roman.pidkostelnyi.demo.dto.response.CategoryResponse;
 import roman.pidkostelnyi.demo.service.CategoryService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public void create(@RequestBody CategoryRequest request) {
+    public void create(@Valid @RequestBody CategoryRequest request) {
         categoryService.create(request);
     }
 
@@ -27,7 +28,7 @@ public class CategoryController {
     }
 
     @PutMapping
-    public void update(Long id, @RequestBody CategoryRequest request) {
+    public void update(Long id, @Valid @RequestBody CategoryRequest request) {
         categoryService.update(id, request);
     }
 
