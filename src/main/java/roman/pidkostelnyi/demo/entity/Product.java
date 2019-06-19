@@ -24,7 +24,7 @@ public class Product {
 
     private Long price;
 
-    //TODO: change column type
+    @Column(columnDefinition = "text")
     private String description;
 
     @ManyToOne
