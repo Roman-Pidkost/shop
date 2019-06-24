@@ -33,7 +33,7 @@ public class UserService {
         user.setCart(cart);
 
         if (request.getFavoritesIds() != null) {
-            final List<Product> collect = request.getFavoritesIds().stream()
+            List<Product> collect = request.getFavoritesIds().stream()
                     .map(productService::findOne)
                     .collect(Collectors.toList());
             user.setFavorites(collect);

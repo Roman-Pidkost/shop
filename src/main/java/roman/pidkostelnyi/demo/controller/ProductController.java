@@ -12,6 +12,7 @@ import roman.pidkostelnyi.demo.service.ProductService;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/product")
 public class ProductController {

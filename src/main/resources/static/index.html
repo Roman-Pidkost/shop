@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+
+<button data-target="modal1" class="btn modal-trigger">Modal</button>
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <input value="default" type="text" id="category-name">
+        <button id="category-create-button" class="btn">Create</button>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('.modal').modal();
+    });
+
+    $('#category-create-button').click(() => {
+        let request = {
+            name: $('#category-name').val()
+        };
+
+        $.ajax({
+            url: 'http://localhost:8080/category',
+            contentType: 'application/json',
+            type: 'post',
+            data: JSON.stringify(request),
+            success: function (response) {
+                console.log('post',response)
+            }
+        });
+
+        $('.modal').close();
+    });
+</script>
+
+
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody id="categories">
+    </tbody>
+</table>
+
+<script>
+    $.ajax({
+        url: 'http://localhost:8080/category',
+        type: 'get',
+        success: function (response) {
+            for (let category of response) {
+                appendCategoryToTable(category);
+            }
+            actionsOnDeleteButton();
+        }
+    });
+
+    function appendCategoryToTable(category) {
+        $('#categories').append(`
+            <tr>
+                <td>${category.id}</td>
+                <td>${category.name}</td>
+                <td>
+                    <button value="${category.id}" class="delete-btn btn waves-effect waves-light">
+                        delete
+                    </button>
+                    <button value="${category.id}" class="btn waves-effect waves-light">
+                        update
+                    </button>
+                </td>
+            </tr>
+        `);
+    }
+
+    function actionsOnDeleteButton() {
+        $('.delete-btn').click((e) => {
+            let id = e.target.value;
+            $.ajax({
+                url: 'http://localhost:8080/category?id=' + id,
+                type: 'delete',
+                success: function () {
+                    $(e.target.parentElement.parentElement).slideUp();
+                    console.log('deleted category with id ', id)
+                }
+            });
+        })
+    }
+</script>
+
+
+</body>
+</html>

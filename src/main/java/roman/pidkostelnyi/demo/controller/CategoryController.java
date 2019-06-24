@@ -10,6 +10,7 @@ import roman.pidkostelnyi.demo.service.CategoryService;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
