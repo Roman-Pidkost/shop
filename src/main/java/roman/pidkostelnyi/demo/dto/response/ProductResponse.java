@@ -15,12 +15,15 @@ public class ProductResponse {
     private String name;
     private Long price;
     private String description;
+    private String image;
 
     public ProductResponse(Product product) {
         id = product.getId();
         price = product.getPrice();
         name = product.getName();
         description = product.getDescription();
+        image = product.getImage();
+
     }
 
 }

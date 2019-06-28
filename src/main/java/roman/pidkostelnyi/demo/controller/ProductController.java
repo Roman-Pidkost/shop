@@ -10,6 +10,7 @@ import roman.pidkostelnyi.demo.dto.response.ProductResponse;
 import roman.pidkostelnyi.demo.service.ProductService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin
@@ -21,7 +22,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public void create(@Valid @RequestBody ProductRequest request) {
+    public void create(@Valid @RequestBody ProductRequest request) throws IOException {
         productService.create(request);
     }
 

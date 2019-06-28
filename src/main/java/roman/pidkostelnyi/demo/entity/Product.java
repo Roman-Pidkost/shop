@@ -24,6 +24,8 @@ public class Product {
 
     private Long price;
 
+    private String image;
+
     @Column(columnDefinition = "text")
     private String description;
 

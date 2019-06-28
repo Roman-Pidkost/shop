@@ -15,6 +15,8 @@ public class ProductRequest {
     @Positive
     private Long price;
     private String description;
+    private String data;
+    private String fileName;
     @NotNull
     private Long categoryId;
 }

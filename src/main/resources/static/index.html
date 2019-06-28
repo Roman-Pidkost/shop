@@ -12,6 +12,7 @@
 <button data-target="modal1" class="btn modal-trigger">Modal</button>
 <div id="modal1" class="modal">
     <div class="modal-content">
+        <input type="text" id="category-id" style="display:none">
         <input value="default" type="text" id="category-name">
         <button id="category-create-button" class="btn">Create</button>
     </div>
@@ -29,17 +30,34 @@
             name: $('#category-name').val()
         };
 
-        $.ajax({
-            url: 'http://localhost:8080/category',
-            contentType: 'application/json',
-            type: 'post',
-            data: JSON.stringify(request),
-            success: function (response) {
-                console.log('post',response)
-            }
-        });
+        let id = $('#category-id').val();
+        if (id === '') {
+            $.ajax({
+                url: 'http://localhost:8080/category',
+                contentType: 'application/json',
+                type: 'post',
+                data: JSON.stringify(request),
+                success: function (response) {
+                    console.log('post',response)
+                    location.reload();
+                }
+            });
+        } else {
+            $.ajax({
+                url: 'http://localhost:8080/category?id=' + id,
+                contentType: 'application/json',
+                type: 'put',
+                data: JSON.stringify(request),
+                success: function (response) {
+                    console.log('put',response)
+                    location.reload();
+                }
+            });
+        }
 
-        $('.modal').close();
+
+        $('#category-id').val('');
+        $('.modal').modal('close');
     });
 </script>
 
@@ -67,19 +85,20 @@
                 appendCategoryToTable(category);
             }
             actionsOnDeleteButton();
+            actionsOnUpdateButton();
         }
     });
 
     function appendCategoryToTable(category) {
         $('#categories').append(`
             <tr>
-                <td>${category.id}</td>
-                <td>${category.name}</td>
+                <td class="category-id-col">${category.id}</td>
+                <td class="category-name-col">${category.name}</td>
                 <td>
                     <button value="${category.id}" class="delete-btn btn waves-effect waves-light">
                         delete
                     </button>
-                    <button value="${category.id}" class="btn waves-effect waves-light">
+                    <button value="${category.id}" class="update-btn btn waves-effect waves-light">
                         update
                     </button>
                 </td>
@@ -99,6 +118,19 @@
                 }
             });
         })
+    }
+
+    function actionsOnUpdateButton() {
+        $('.update-btn').click((e) => {
+            let id = e.target.value;
+
+            let $btn = $(e.target);
+
+            $('#category-name').val($btn.parent().siblings('.category-name-col').html());
+            $('#category-id').val(id);
+            $('.modal').modal('open');
+        });
+
     }
 </script>
 

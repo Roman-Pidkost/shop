@@ -13,6 +13,7 @@ import roman.pidkostelnyi.demo.entity.Category;
 import roman.pidkostelnyi.demo.entity.Product;
 import roman.pidkostelnyi.demo.repository.ProductRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +25,14 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
-    public void create(ProductRequest request) {
+    @Autowired
+    private FileService fileService;
+
+    public void create(ProductRequest request) throws IOException {
         productRepository.save(productRequestToProduct(null, request));
     }
 
-    public void update(Long id, ProductRequest request) {
+    public void update(Long id, ProductRequest request) throws IOException {
         productRepository.save(productRequestToProduct(findOne(id), request));
     }
 
@@ -52,7 +56,7 @@ public class ProductService {
                 page.get().map(ProductResponse::new).collect(Collectors.toList()));
     }
 
-    private Product productRequestToProduct(Product product, ProductRequest request) {
+    private Product productRequestToProduct(Product product, ProductRequest request) throws IOException {
         if (product == null) {
             product = new Product();
         }
@@ -62,6 +66,10 @@ public class ProductService {
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
+        if (request.getData() != null && !request.getData().isEmpty()) {
+            String path = fileService.saveFile(request.getData(), request.getFileName());
+            product.setImage(path);
+        }
         return product;
     }
 
