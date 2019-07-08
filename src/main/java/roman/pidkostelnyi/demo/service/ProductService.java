@@ -6,12 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import roman.pidkostelnyi.demo.dto.request.PaginationRequest;
+import roman.pidkostelnyi.demo.dto.request.ProductCriteria;
 import roman.pidkostelnyi.demo.dto.request.ProductRequest;
 import roman.pidkostelnyi.demo.dto.response.PageResponse;
 import roman.pidkostelnyi.demo.dto.response.ProductResponse;
 import roman.pidkostelnyi.demo.entity.Category;
 import roman.pidkostelnyi.demo.entity.Product;
 import roman.pidkostelnyi.demo.repository.ProductRepository;
+import roman.pidkostelnyi.demo.specification.ProductSpecification;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,6 +50,11 @@ public class ProductService {
 //        final List<ProductResponse> collect = content.stream().map(ProductResponse::new).collect(Collectors.toList());
 //        return new PageResponse<>(all.getTotalPages(), all.getTotalElements(), collect);
 //    }
+
+    public List<ProductResponse> findByCriteria(ProductCriteria criteria) {
+        return productRepository.findAll(new ProductSpecification(criteria), criteria.getPaginationRequest().toPageable())
+                .stream().map(ProductResponse::new).collect(Collectors.toList());
+    }
 
     public PageResponse<ProductResponse> findPage(PaginationRequest paginationRequest) {
         Page<Product> page = productRepository.findAll(paginationRequest.toPageable());

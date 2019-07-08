@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import roman.pidkostelnyi.demo.dto.request.PaginationRequest;
+import roman.pidkostelnyi.demo.dto.request.ProductCriteria;
 import roman.pidkostelnyi.demo.dto.request.ProductRequest;
 import roman.pidkostelnyi.demo.dto.response.PageResponse;
 import roman.pidkostelnyi.demo.dto.response.ProductResponse;
@@ -29,5 +30,10 @@ public class ProductController {
     @GetMapping
     public PageResponse<ProductResponse> findAll(PaginationRequest paginationRequest) {
         return productService.findPage(paginationRequest);
+    }
+
+    @PostMapping("/findByFilter")
+    public List<ProductResponse> findByFilter(@Valid @RequestBody ProductCriteria productCriteria) {
+        return productService.findByCriteria(productCriteria);
     }
 }
