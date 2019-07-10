@@ -32,6 +32,11 @@ public class ProductController {
         return productService.findPage(paginationRequest);
     }
 
+    @GetMapping("/byId")
+    public ProductResponse findOne(Long id) {
+        return new ProductResponse(productService.findOne(id));
+    }
+
     @PostMapping("/findByFilter")
     public List<ProductResponse> findByFilter(@Valid @RequestBody ProductCriteria productCriteria) {
         return productService.findByCriteria(productCriteria);

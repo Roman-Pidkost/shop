@@ -10,4 +10,14 @@ public class HtmlPagesController {
     public String category() {
         return "index.html";
     }
+
+    @RequestMapping("catalog")
+    public String catalog() {
+        return "catalog.html";
+    }
+
+    @RequestMapping("/item")
+    public String product() {
+        return "product.html";
+    }
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+<style>
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .item-photo {
+        max-width: 60%;
+    }
+</style>
+    <h2 class="title">Audi a8 3.0</h2>
+    <div class="container"></div>
+
+<script>
+    const searchParams = new URLSearchParams(window.location.search);
+    const setDataFromApi = (data) => {
+        $('.title').html(data.name);
+        $('.container').append(`
+            <img class="item-photo" src="http://localhost:8080/img/${data.image}">
+            <div class="item-description">
+                <p class="item-price">$ ${data.price}</p>
+                <p class="item-text">${data.description}</p>
+            </div>
+        `);
+    };
+    $.ajax({
+        url: `http://localhost:8080/product/byId?id=${searchParams.get('id')}`,
+        type: 'get',
+        success: (res) => {
+            setDataFromApi(res)
+        },
+        error: console.log
+    })
+
+
+</script>
+</body>
+</html>
